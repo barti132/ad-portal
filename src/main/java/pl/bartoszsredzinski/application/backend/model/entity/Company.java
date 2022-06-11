@@ -18,7 +18,6 @@ import java.util.List;
  * created on 03.06.2022
  */
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -27,4 +26,11 @@ public class Company extends AbstractEntity{
 
     @OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
     private List<Contact> employees = new LinkedList<>();
+
+    public Company(){
+    }
+
+    public Company(String name){
+        this.name = name;
+    }
 }
