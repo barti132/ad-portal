@@ -1,21 +1,58 @@
 package pl.bartoszsredzinski.application.ui;
 
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import pl.bartoszsredzinski.application.backend.model.entity.Company;
+import pl.bartoszsredzinski.application.backend.model.entity.Contact;
+import pl.bartoszsredzinski.application.backend.service.ContactService;
+
 
 @PageTitle("Hello World")
 @Route(value = "")
 public class MainView extends VerticalLayout{
 
-    public MainView(){
-        Button button = new Button("I'm a button");
-        add(button, new DatePicker("Pick a date"));
+    private final ContactService contactService;
 
-        button.addClickListener(buttonClickEvent -> add(new Text("Clicked")));
+    private Grid<Contact> grid = new Grid<>(Contact.class);
+    private TextField filterText = new TextField();
+
+    public MainView(ContactService contactService){
+        this.contactService = contactService;
+        addClassName("list-view");
+        setSizeFull();
+        configureFilter();
+        configureGrid();
+
+        add(filterText, grid);
+        updateList();
+    }
+
+    private void configureFilter(){
+        filterText.setPlaceholder("Filter by name...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+    }
+
+    private void updateList(){
+        grid.setItems(contactService.findAll(filterText.getValue()));
+    }
+
+    private void configureGrid(){
+        grid.addClassName("contact-grid");
+        grid.setSizeFull();
+        grid.removeColumnByKey("company");
+        grid.setColumns("firstName", "lastName", "email", "status");
+        grid.addColumn(contact -> {
+            Company company = contact.getCompany();
+            return company == null ? "-" : company.getName();
+        }).setHeader("Company");
+
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
 }
