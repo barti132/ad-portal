@@ -1,4 +1,4 @@
-package pl.bartoszsredzinski.application.ui;
+package pl.bartoszsredzinski.application.ui.list;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.button.Button;
@@ -15,12 +15,13 @@ import pl.bartoszsredzinski.application.backend.model.entity.Company;
 import pl.bartoszsredzinski.application.backend.model.entity.Contact;
 import pl.bartoszsredzinski.application.backend.service.CompanyService;
 import pl.bartoszsredzinski.application.backend.service.ContactService;
+import pl.bartoszsredzinski.application.ui.MainLayout;
 
 
-@PageTitle("Hello World")
-@Route(value = "")
+@PageTitle("Contacts | Vaadin CRM")
+@Route(value = "", layout = MainLayout.class)
 @CssImport("./styles/shared-styles.css")
-public class MainView extends VerticalLayout{
+public class ListView extends VerticalLayout{
 
     private final ContactService contactService;
 
@@ -28,7 +29,7 @@ public class MainView extends VerticalLayout{
     private TextField filterText = new TextField();
     private ContactForm form;
 
-    public MainView(ContactService contactService, CompanyService companyService){
+    public ListView(ContactService contactService, CompanyService companyService){
         this.contactService = contactService;
         addClassName("list-view");
         setSizeFull();

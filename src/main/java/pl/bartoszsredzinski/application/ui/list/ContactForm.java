@@ -1,4 +1,4 @@
-package pl.bartoszsredzinski.application.ui;
+package pl.bartoszsredzinski.application.ui.list;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
